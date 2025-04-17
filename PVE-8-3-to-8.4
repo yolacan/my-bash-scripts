@@ -1,0 +1,42 @@
+#!/bin/bash
+
+echo "🚀 Proxmox VE 8.3 → 8.4 Güncelleme Başlatılıyor..."
+
+# 1. Güncelleme listelerini yenile
+echo "📦 APT kaynakları güncelleniyor..."
+apt update
+
+# 2. Var olan sistemi güncelle
+echo "🛠️ Var olan sistem yükseltiliyor (dist-upgrade)..."
+apt -y dist-upgrade
+
+# 3. Enterprise deposu varsa pasifleştir
+echo "📝 Enterprise deposu kontrol ediliyor..."
+if grep -q '^deb https://enterprise.proxmox.com' /etc/apt/sources.list.d/pve-enterprise.list 2>/dev/null; then
+  echo "🔧 Enterprise deposu devre dışı bırakılıyor..."
+  sed -i 's|^deb https://enterprise.proxmox.com|# deb https://enterprise.proxmox.com|' /etc/apt/sources.list.d/pve-enterprise.list
+else
+  echo "✅ Enterprise deposu zaten devre dışı."
+fi
+
+# 4. No-subscription deposunu ekle
+echo "📥 No-subscription deposu ekleniyor..."
+echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-no-subscription.list
+
+# 5. APT listelerini tekrar güncelle
+echo "🔄 Paket listeleri tekrar güncelleniyor..."
+apt update
+
+# 6. Proxmox VE tam güncelleme
+echo "⬆️ Proxmox VE 8.4 sürümüne yükseltiliyor..."
+apt -y full-upgrade
+
+# 7. Tamamlandıktan sonra yeniden başlatma teklifi
+echo "✅ Güncelleme tamamlandı!"
+read -p "♻️ Şimdi sistemi yeniden başlatmak ister misiniz? (e/h): " reboot_answer
+if [[ "$reboot_answer" == "e" || "$reboot_answer" == "E" ]]; then
+  echo "🔁 Sistem yeniden başlatılıyor..."
+  reboot
+else
+  echo "⏳ Yeniden başlatma iptal edildi. Lütfen manuel olarak reboot yapın."
+fi
