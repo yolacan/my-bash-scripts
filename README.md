@@ -4,9 +4,9 @@ create a bash script file
 
 copy - paste from bash script file and save and exit
 
-chane mode 
+change file mode 
 
-"chmode upgare.sh"
+"chmode upgrade.sh"
 
 and run it 
 
