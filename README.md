@@ -10,5 +10,5 @@ change file mode
 
 and run it 
 
-"./upgare.sh"
+"./upgrade.sh"
 
