@@ -6,7 +6,7 @@ copy - paste from bash script file and save and exit
 
 change file mode 
 
-"chmode upgrade.sh"
+"chmode +x upgrade.sh"
 
 and run it 
 
