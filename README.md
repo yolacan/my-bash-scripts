@@ -1,6 +1,6 @@
 create a bash script file
 
-"nano upgrade.sh"
+"nano filename.sh"
 
 copy - paste from bash script file and save and exit
 
@@ -10,5 +10,5 @@ change file mode
 
 and run it 
 
-"./upgrade.sh"
+"./filename.sh"
 
